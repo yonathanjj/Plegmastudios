@@ -1,0 +1,1874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DivBlock Studio - Digital Product Design</title>
+  <style>
+    :root {
+        --primary: #4B7F52; /* Muted Green */
+        --primary-dark: #3A6540;
+        --accent: #EDF7D2; /* Light Beige */
+        --accent-light: #ECEBF3; /* Off-White */
+        --text-dark: #12130F; /* Dark Charcoal */
+        --bg-dark: #12130F;
+        --bg-darker: #0A0A08;
+        --gray: #1E1E1E;
+        --gray-light: #2E2E2E;
+        --white: #FFFFFF;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+        background-color: var(--bg-dark);
+        color: var(--accent-light);
+        line-height: 1.6;
+        overflow-x: hidden;
+    }
+
+    .container {
+        display: flex;
+        min-height: 100vh;
+    }
+
+    .left-sidebar {
+        width: 40%;
+        padding: 2rem;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow: hidden;
+        background-color: var(--bg-darker);
+        border-right: 1px solid var(--gray);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .main-content {
+        width: 60%;
+        padding: 2rem;
+    }
+
+    .logo {
+        width: 180px;
+        margin-bottom: 3rem;
+    }
+
+    .logo img {
+        width: 100%;
+        height: auto;
+    }
+
+    .tagline {
+        font-size: 2.5rem;
+        font-weight: 700;
+        line-height: 1.2;
+        margin-bottom: 2rem;
+        color: var(--white);
+    }
+
+    .tagline span {
+        color: var(--primary);
+    }
+
+    .contact-btn {
+        display: inline-block;
+        background-color: var(--primary);
+        color: var(--white);
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.5rem;
+        text-decoration: none;
+        font-weight: 600;
+        margin-bottom: 3rem;
+        transition: all 0.3s;
+        border: none;
+        cursor: pointer;
+    }
+
+    .contact-btn:hover {
+        background-color: var(--primary-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(75, 127, 82, 0.3);
+    }
+
+    .team-section {
+        margin-top: auto;
+        padding-top: 2rem;
+    }
+
+    .team-title {
+        font-size: 1.2rem;
+        margin-bottom: 1.5rem;
+        color: var(--white);
+    }
+
+    .team-members {
+        display: flex;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .team-member {
+        position: relative;
+        width: 80px;
+        height: 80px;
+        margin-bottom: 60px;
+    }
+
+    .member-image {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        z-index: 2;
+        position: relative;
+    }
+
+    .member-info {
+        position: absolute;
+        bottom: -60px;
+        left: 50%;
+        transform: translateX(-50%) scale(0.9);
+        width: 180px;
+        background-color: var(--primary);
+        padding: 1rem;
+        border-radius: 0.5rem;
+        opacity: 0;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        text-align: center;
+        z-index: 1;
+    }
+
+    .team-member:hover .member-image {
+        transform: scale(1.1);
+    }
+
+    .team-member:hover .member-info {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+        bottom: -70px;
+    }
+
+    .member-name {
+        font-weight: 700;
+        color: var(--white);
+        margin-bottom: 0.3rem;
+    }
+
+    .member-role {
+        font-size: 0.8rem;
+        color: var(--accent);
+    }
+
+    .contact-info {
+        margin-bottom: 2rem;
+        background-color: var(--gray);
+        padding: 1.5rem;
+        border-radius: 0.5rem;
+        border-left: 3px solid var(--primary);
+    }
+
+    .contact-item {
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .contact-item svg {
+        width: 20px;
+        height: 20px;
+        fill: var(--primary);
+    }
+
+    .contact-item a {
+        color: var(--accent-light);
+        text-decoration: none;
+        transition: color 0.3s;
+        font-weight: 500;
+    }
+
+    .contact-item a:hover {
+        color: var(--primary);
+        text-decoration: underline;
+    }
+
+    .client-showcase {
+        background-color: var(--gray);
+        padding: 1.5rem;
+        border-radius: 0.5rem;
+        margin-bottom: 2rem;
+        border-left: 3px solid var(--primary);
+    }
+
+    .client-name {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: var(--white);
+    }
+
+    .client-description {
+        margin-bottom: 1rem;
+        color: var(--accent-light);
+    }
+
+    /* Main Content Styles */
+    .project {
+        margin-bottom: 4rem;
+        overflow: hidden;
+        cursor: pointer;
+        transition: all 0.3s;
+        border-radius: 0.5rem;
+    }
+
+    .project:hover {
+        transform: translateY(-5px);
+    }
+
+    .project-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+
+    .project-name {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--white);
+    }
+
+    .project-slider {
+        position: relative;
+        height: 500px;
+        margin-bottom: 1rem;
+        overflow: hidden;
+        border-radius: 0.5rem;
+    }
+
+    .project-slides {
+        display: flex;
+        height: 100%;
+        width: 100%;
+        position: relative;
+    }
+
+    .project-slide {
+        min-width: 100%;
+        height: 100%;
+        background-color: var(--gray);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .project-slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .project-description {
+        margin-bottom: 1.5rem;
+        color: var(--accent-light);
+    }
+
+    .project-nav {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .project-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: var(--gray-light);
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .project-dot.active {
+        background-color: var(--primary);
+        transform: scale(1.2);
+    }
+
+    .section-title {
+        font-size: 2rem;
+        font-weight: 700;
+        margin: 3rem 0 1.5rem;
+        color: var(--white);
+        position: relative;
+        padding-bottom: 0.5rem;
+    }
+
+    .section-title:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 60px;
+        height: 3px;
+        background-color: var(--primary);
+    }
+
+    /* Services Section - Redesigned */
+    .services-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+    }
+
+    .service-card {
+        background-color: var(--gray);
+        padding: 2rem;
+        border-radius: 0.5rem;
+        transition: all 0.4s;
+        position: relative;
+        overflow: hidden;
+        border-top: 3px solid var(--primary);
+    }
+
+    .service-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    }
+
+    .service-icon {
+        font-size: 2.5rem;
+        margin-bottom: 1.5rem;
+        color: var(--primary);
+    }
+
+    .service-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: var(--white);
+    }
+
+    .service-description {
+        color: var(--accent-light);
+        margin-bottom: 1.5rem;
+    }
+
+    .service-link {
+        display: inline-flex;
+        align-items: center;
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s;
+        cursor: pointer;
+    }
+
+    .service-link svg {
+        margin-left: 0.5rem;
+        transition: transform 0.3s;
+    }
+
+    .service-link:hover {
+        color: var(--accent-light);
+    }
+
+    .service-link:hover svg {
+        transform: translateX(5px);
+    }
+
+    /* Pricing Section */
+    .pricing-plans {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-bottom: 3rem;
+    }
+
+    .plan {
+        background-color: var(--gray);
+        padding: 2rem;
+        border-radius: 0.5rem;
+        transition: all 0.4s;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .plan:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    }
+
+    .plan:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background-color: var(--primary);
+    }
+
+    .plan-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: var(--white);
+    }
+
+    .plan-price {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        color: var(--primary);
+    }
+
+    .plan-price span {
+        font-size: 1rem;
+        color: var(--accent-light);
+    }
+
+    .plan-description {
+        margin-bottom: 1.5rem;
+        color: var(--accent-light);
+    }
+
+    .plan-features {
+        margin-bottom: 2rem;
+    }
+
+    .plan-feature {
+        margin-bottom: 0.8rem;
+        display: flex;
+        align-items: flex-start;
+        color: var(--accent-light);
+    }
+
+    .plan-feature:before {
+        content: "✓";
+        margin-right: 0.5rem;
+        color: var(--primary);
+        font-weight: bold;
+    }
+
+    /* What's Included - Redesigned */
+    .included-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+    }
+
+    .included-item {
+        background-color: var(--gray);
+        padding: 1.5rem;
+        border-radius: 0.5rem;
+        text-align: center;
+        transition: all 0.4s;
+        border: 1px solid var(--gray-light);
+    }
+
+    .included-item:hover {
+        background-color: var(--primary);
+        transform: translateY(-5px);
+        border-color: var(--primary);
+    }
+
+    .included-item:hover .included-icon {
+        color: var(--white);
+    }
+
+    .included-item:hover .included-text {
+        color: var(--white);
+    }
+
+    .included-icon {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        color: var(--primary);
+        transition: all 0.3s;
+    }
+
+    .included-text {
+        color: var(--accent-light);
+        transition: all 0.3s;
+    }
+
+    /* Testimonial Section */
+    .testimonial-container {
+        position: relative;
+        margin-bottom: 3rem;
+    }
+
+    .testimonial-slider {
+        overflow: hidden;
+        position: relative;
+        height: 250px;
+    }
+
+    .testimonial-slides {
+        display: flex;
+        transition: transform 0.5s ease;
+        height: 100%;
+    }
+
+    .testimonial {
+        min-width: 100%;
+        background-color: var(--gray);
+        padding: 2rem;
+        border-radius: 0.5rem;
+        transition: transform 0.3s;
+    }
+
+    .testimonial-text {
+        font-style: italic;
+        margin-bottom: 1.5rem;
+        font-size: 1.1rem;
+        color: var(--accent-light);
+        position: relative;
+    }
+
+    .testimonial-text:before {
+        content: '"';
+        font-size: 3rem;
+        position: absolute;
+        top: -1rem;
+        left: -1rem;
+        color: var(--primary);
+        opacity: 0.3;
+    }
+
+    .testimonial-author {
+        font-weight: 700;
+        color: var(--white);
+    }
+
+    .testimonial-role {
+        color: var(--accent-light);
+        font-size: 0.875rem;
+    }
+
+    .testimonial-nav {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 1rem;
+    }
+
+    .testimonial-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: var(--gray-light);
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .testimonial-dot.active {
+        background-color: var(--primary);
+        transform: scale(1.2);
+    }
+
+    /* CTA Section */
+    .cta-section {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+        border-radius: 0.5rem;
+        margin: 3rem 0;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .cta-section:before {
+        content: '';
+        position: absolute;
+        top: -50px;
+        right: -50px;
+        width: 200px;
+        height: 200px;
+        background-color: rgba(237, 247, 210, 0.1);
+        border-radius: 50%;
+    }
+
+    .cta-section:after {
+        content: '';
+        position: absolute;
+        bottom: -50px;
+        left: -50px;
+        width: 200px;
+        height: 200px;
+        background-color: rgba(237, 247, 210, 0.1);
+        border-radius: 50%;
+    }
+
+    .cta-title {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 2rem;
+        color: var(--white);
+        position: relative;
+        z-index: 1;
+    }
+
+    .cta-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .cta-btn-secondary {
+        background-color: transparent;
+        color: var(--white);
+        border: 2px solid var(--white);
+    }
+
+    .cta-btn-secondary:hover {
+        background-color: var(--white);
+        color: var(--primary);
+    }
+
+    /* Footer */
+    .footer {
+        text-align: center;
+        padding: 2rem;
+        border-top: 1px solid var(--gray);
+        margin-top: 2rem;
+    }
+
+    .footer-logo {
+        width: 120px;
+        margin: 0 auto 1.5rem;
+    }
+
+    .footer-logo img {
+        width: 100%;
+        height: auto;
+    }
+
+    .social-links {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        margin: 1.5rem 0;
+    }
+
+    .social-links a {
+        color: var(--accent-light);
+        text-decoration: none;
+        transition: color 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .social-links a:hover {
+        color: var(--primary);
+    }
+
+    .social-links svg {
+        width: 18px;
+        height: 18px;
+        fill: currentColor;
+    }
+
+    .copyright {
+        color: var(--accent-light);
+        font-size: 0.875rem;
+    }
+
+    /* Modal styles */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.9);
+        z-index: 1000;
+        overflow-y: auto;
+    }
+
+    .modal-content {
+        background-color: var(--bg-darker);
+        margin: 5% auto;
+        padding: 2rem;
+        width: 80%;
+        max-width: 900px;
+        border-radius: 0.5rem;
+        position: relative;
+        border: 1px solid var(--primary);
+    }
+
+    .close-modal {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        font-size: 1.5rem;
+        color: var(--accent-light);
+        cursor: pointer;
+        transition: color 0.3s;
+        background-color: var(--primary);
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .close-modal:hover {
+        color: var(--white);
+    }
+
+    .modal-header {
+        margin-bottom: 1.5rem;
+    }
+
+    .modal-title {
+        font-size: 2rem;
+        color: var(--white);
+        margin-bottom: 0.5rem;
+    }
+
+    .modal-subtitle {
+        color: var(--primary);
+        font-weight: 600;
+    }
+
+    .modal-slider {
+        height: 400px;
+        margin-bottom: 1.5rem;
+        border-radius: 0.5rem;
+        overflow: hidden;
+    }
+
+    .modal-slides {
+        display: flex;
+        height: 100%;
+    }
+
+    .modal-slide {
+        min-width: 100%;
+        height: 100%;
+    }
+
+    .modal-slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .modal-description {
+        margin-bottom: 1.5rem;
+        line-height: 1.7;
+    }
+
+    .modal-features {
+        margin-bottom: 2rem;
+    }
+
+    .modal-feature-title {
+        font-size: 1.2rem;
+        color: var(--white);
+        margin-bottom: 1rem;
+        position: relative;
+        padding-left: 1rem;
+    }
+
+    .modal-feature-title:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 5px;
+        height: 80%;
+        background-color: var(--primary);
+    }
+
+    .modal-feature-list {
+        list-style-type: none;
+    }
+
+    .modal-feature-item {
+        margin-bottom: 0.5rem;
+        padding-left: 1rem;
+        position: relative;
+    }
+
+    .modal-feature-item:before {
+        content: '•';
+        position: absolute;
+        left: 0;
+        color: var(--primary);
+    }
+
+    .modal-links {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+
+    .modal-link {
+        display: inline-block;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.5rem;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+
+    .modal-link-primary {
+        background-color: var(--primary);
+        color: var(--white);
+    }
+
+    .modal-link-primary:hover {
+        background-color: var(--primary-dark);
+    }
+
+    .modal-link-secondary {
+        background-color: transparent;
+        color: var(--primary);
+        border: 2px solid var(--primary);
+    }
+
+    .modal-link-secondary:hover {
+        background-color: var(--primary);
+        color: var(--white);
+    }
+
+    /* Service Modal */
+    .service-modal-content {
+        background-color: var(--bg-darker);
+        margin: 5% auto;
+        padding: 2rem;
+        width: 80%;
+        max-width: 700px;
+        border-radius: 0.5rem;
+        position: relative;
+        border: 1px solid var(--primary);
+    }
+
+    .service-modal-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+
+    .service-modal-icon {
+        font-size: 3rem;
+        color: var(--primary);
+        margin-right: 1.5rem;
+    }
+
+    .service-modal-title {
+        font-size: 1.8rem;
+        color: var(--white);
+    }
+
+    .service-details {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .service-detail-card {
+        background-color: var(--gray);
+        padding: 1.5rem;
+        border-radius: 0.5rem;
+    }
+
+    .service-detail-title {
+        font-size: 1.1rem;
+        color: var(--primary);
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+    }
+
+    .service-detail-value {
+        font-size: 1.3rem;
+        color: var(--white);
+        font-weight: 700;
+    }
+
+    .service-process {
+        margin-bottom: 2rem;
+    }
+
+    .process-step {
+        display: flex;
+        margin-bottom: 1rem;
+        align-items: flex-start;
+    }
+
+    .process-number {
+        background-color: var(--primary);
+        color: var(--white);
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1rem;
+        flex-shrink: 0;
+    }
+
+    .process-description {
+        color: var(--accent-light);
+    }
+
+    @media (max-width: 1024px) {
+        .services-container, .included-container {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .modal-content, .service-modal-content {
+            width: 90%;
+        }
+
+        .service-details {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            flex-direction: column;
+        }
+
+        .left-sidebar {
+            width: 100%;
+            position: relative;
+            height: auto;
+            padding: 1.5rem;
+        }
+
+        .main-content {
+            width: 100%;
+            padding: 1.5rem;
+        }
+
+        .services-container, .included-container {
+            grid-template-columns: 1fr;
+        }
+
+        .project-slider {
+            height: 300px;
+        }
+
+        .modal-slider {
+            height: 250px;
+        }
+
+        .cta-buttons {
+            flex-direction: column;
+        }
+
+        .team-member {
+            width: 70px;
+            height: 70px;
+            margin-bottom: 50px;
+        }
+
+        .member-info {
+            width: 160px;
+        }
+
+        .service-modal-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .service-modal-icon {
+            margin-right: 0;
+            margin-bottom: 1rem;
+        }
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+<div class="container">
+  <div class="left-sidebar">
+    <div class="logo">
+      <img src="https://via.placeholder.com/180x60?text=DivBlock+Studio" alt="DivBlock Studio Logo">
+    </div>
+    <div class="tagline">Crafting digital experiences<br>with <span>precision</span> and purpose</div>
+    <a href="mailto:hello@divblockstudio.com" class="contact-btn">Let's talk</a>
+
+    <div class="contact-info">
+      <div class="contact-item">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+        <a href="mailto:hello@divblockstudio.com">hello@divblockstudio.com</a>
+      </div>
+      <div class="contact-item">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+        <a href="tel:+1234567890">+1 (234) 567-890</a>
+      </div>
+    </div>
+
+    <div class="client-showcase">
+      <div class="client-name">Admirals</div>
+      <div class="client-description">
+        "DivBlock transformed our digital presence, delivering a website that outperforms our expectations in both design and functionality."
+      </div>
+    </div>
+
+    <div class="team-section">
+      <div class="team-title">Meet Our Team</div>
+      <div class="team-members">
+        <div class="team-member">
+          <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Alex Johnson" class="member-image">
+          <div class="member-info">
+            <div class="member-name">Alex Johnson</div>
+            <div class="member-role">Lead Designer</div>
+          </div>
+        </div>
+        <div class="team-member">
+          <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah Williams" class="member-image">
+          <div class="member-info">
+            <div class="member-name">Sarah Williams</div>
+            <div class="member-role">UX Specialist</div>
+          </div>
+        </div>
+        <div class="team-member">
+          <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="Michael Chen" class="member-image">
+          <div class="member-info">
+            <div class="member-name">Michael Chen</div>
+            <div class="member-role">Webflow Developer</div>
+          </div>
+        </div>
+        <div class="team-member">
+          <img src="https://randomuser.me/api/portraits/women/33.jpg" alt="Emily Rodriguez" class="member-image">
+          <div class="member-info">
+            <div class="member-name">Emily Rodriguez</div>
+            <div class="member-role">Motion Designer</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <!-- Project 1 -->
+    <div class="project" data-project="default">
+      <div class="project-header">
+        <div class="project-name">Default</div>
+        <div class="project-nav">
+          <div class="project-dot active" data-project="default" data-slide="0"></div>
+          <div class="project-dot" data-project="default" data-slide="1"></div>
+          <div class="project-dot" data-project="default" data-slide="2"></div>
+        </div>
+      </div>
+      <div class="project-slider" id="default-slider">
+        <div class="project-slides">
+          <div class="project-slide">
+            <img src="https://source.unsplash.com/random/800x400/?webdesign,default" alt="Default Project 1">
+          </div>
+          <div class="project-slide">
+            <img src="https://source.unsplash.com/random/800x400/?website,default" alt="Default Project 2">
+          </div>
+          <div class="project-slide">
+            <img src="https://source.unsplash.com/random/800x400/?ui,default" alt="Default Project 3">
+          </div>
+        </div>
+      </div>
+      <div class="project-description">
+        Comprehensive redesign of Default's corporate website with interactive elements and custom CMS implementation.
+      </div>
+    </div>
+
+    <!-- Project 2 -->
+    <div class="project" data-project="actionable">
+      <div class="project-header">
+        <div class="project-name">Actionable AI</div>
+        <div class="project-nav">
+          <div class="project-dot active" data-project="actionable" data-slide="0"></div>
+          <div class="project-dot" data-project="actionable" data-slide="1"></div>
+          <div class="project-dot" data-project="actionable" data-slide="2"></div>
+        </div>
+      </div>
+      <div class="project-slider" id="actionable-slider">
+        <div class="project-slides">
+          <div class="project-slide">
+            <img src="https://source.unsplash.com/random/800x400/?ai,dashboard" alt="Actionable AI Project 1">
+          </div>
+          <div class="project-slide">
+            <img src="https://source.unsplash.com/random/800x400/?artificial,intelligence" alt="Actionable AI Project 2">
+          </div>
+          <div class="project-slide">
+            <img src="https://source.unsplash.com/random/800x400/?machine,learning" alt="Actionable AI Project 3">
+          </div>
+        </div>
+      </div>
+      <div class="project-description">
+        Designed and developed a flexible Webflow site for this AI startup to showcase their rapidly evolving product.
+      </div>
+    </div>
+
+    <!-- Project 3 -->
+    <div class="project" data-project="admirals">
+      <div class="project-header">
+        <div class="project-name">Admirals</div>
+        <div class="project-nav">
+          <div class="project-dot active" data-project="admirals" data-slide="0"></div>
+          <div class="project-dot" data-project="admirals" data-slide="1"></div>
+          <div class="project-dot" data-project="admirals" data-slide="2"></div>
+        </div>
+      </div>
+      <div class="project-slider" id="admirals-slider">
+        <div class="project-slides">
+          <div class="project-slide">
+            <img src="https://source.unsplash.com/random/800x400/?finance,trading" alt="Admirals Project 1">
+          </div>
+          <div class="project-slide">
+            <img src="https://source.unsplash.com/random/800x400/?stocks,market" alt="Admirals Project 2">
+          </div>
+          <div class="project-slide">
+            <img src="https://source.unsplash.com/random/800x400/?investment,broker" alt="Admirals Project 3">
+          </div>
+        </div>
+      </div>
+      <div class="project-description">
+        Implemented a Webflow-based solution allowing rapid creation and testing of marketing pages for this financial services company.
+      </div>
+    </div>
+
+    <div class="section-title">Our Services</div>
+    <div class="services-container">
+      <div class="service-card" data-service="motion-design">
+        <div class="service-icon"><i class="fas fa-film"></i></div>
+        <div class="service-title">Motion Design</div>
+        <div class="service-description">
+          Engaging animations and micro-interactions that bring your digital products to life and enhance user experience.
+        </div>
+        <div class="service-link" data-service="motion-design">
+          Learn more
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </div>
+      </div>
+
+      <div class="service-card" data-service="product-design">
+        <div class="service-icon"><i class="fas fa-cube"></i></div>
+        <div class="service-title">Product Design</div>
+        <div class="service-description">
+          End-to-end design of digital products that solve real problems with intuitive interfaces and beautiful aesthetics.
+        </div>
+        <div class="service-link" data-service="product-design">
+          Learn more
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </div>
+      </div>
+
+      <div class="service-card" data-service="ui-ux">
+        <div class="service-icon"><i class="fas fa-mobile-alt"></i></div>
+        <div class="service-title">UI/UX Design</div>
+        <div class="service-description">
+          User-centered interface design with exceptional experience at its core, backed by research and testing.
+        </div>
+        <div class="service-link" data-service="ui-ux">
+          Learn more
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </div>
+      </div>
+
+      <div class="service-card" data-service="web-dev">
+        <div class="service-icon"><i class="fas fa-code"></i></div>
+        <div class="service-title">Web Development</div>
+        <div class="service-description">
+          Building fast, responsive, and accessible websites using modern technologies and best practices.
+        </div>
+        <div class="service-link" data-service="web-dev">
+          Learn more
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </div>
+      </div>
+
+      <div class="service-card" data-service="system-design">
+        <div class="service-icon"><i class="fas fa-project-diagram"></i></div>
+        <div class="service-title">System Design</div>
+        <div class="service-description">
+          Architecting scalable and maintainable systems that grow with your business and user needs.
+        </div>
+        <div class="service-link" data-service="system-design">
+          Learn more
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </div>
+      </div>
+
+      <div class="service-card" data-service="branding">
+        <div class="service-icon"><i class="fas fa-palette"></i></div>
+        <div class="service-title">Branding</div>
+        <div class="service-description">
+          Developing cohesive brand identities that communicate your values and vision across all touchpoints.
+        </div>
+        <div class="service-link" data-service="branding">
+          Learn more
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </div>
+      </div>
+
+      <div class="service-card" data-service="system-dev">
+        <div class="service-icon"><i class="fas fa-server"></i></div>
+        <div class="service-title">System Development</div>
+        <div class="service-description">
+          Building robust backend systems and APIs to power your applications with reliability and security.
+        </div>
+        <div class="service-link" data-service="system-dev">
+          Learn more
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </div>
+      </div>
+
+      <div class="service-card" data-service="saas-dev">
+        <div class="service-icon"><i class="fas fa-cloud"></i></div>
+        <div class="service-title">SaaS Development</div>
+        <div class="service-description">
+          Creating scalable software-as-a-service solutions with subscription models and cloud infrastructure.
+        </div>
+        <div class="service-link" data-service="saas-dev">
+          Learn more
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">How We Work</div>
+    <div class="pricing-plans">
+      <div class="plan">
+        <div class="plan-title">Starter</div>
+        <div class="plan-price">$2,500 <span>/ project</span></div>
+        <div class="plan-description">
+          Perfect for well-defined projects with clear requirements and deliverables.
+        </div>
+        <div class="plan-features">
+          <div class="plan-feature">Fixed project scope</div>
+          <div class="plan-feature">Dedicated project manager</div>
+          <div class="plan-feature">Weekly progress updates</div>
+          <div class="plan-feature">2 rounds of revisions</div>
+          <div class="plan-feature">2-week post-launch support</div>
+        </div>
+        <a href="mailto:hello@divblockstudio.com?subject=Starter Project Inquiry" class="contact-btn">Get started</a>
+      </div>
+
+      <div class="plan">
+        <div class="plan-title">Growth</div>
+        <div class="plan-price">$4,500 <span>/ month</span></div>
+        <div class="plan-description">
+          Ideal for growing businesses needing ongoing design and development support.
+        </div>
+        <div class="plan-features">
+          <div class="plan-feature">40 hours per month</div>
+          <div class="plan-feature">Priority support</div>
+          <div class="plan-feature">Dedicated account manager</div>
+          <div class="plan-feature">Unlimited requests</div>
+          <div class="plan-feature">2 active projects</div>
+        </div>
+        <a href="mailto:hello@divblockstudio.com?subject=Growth Plan Inquiry" class="contact-btn">Get started</a>
+      </div>
+
+      <div class="plan">
+        <div class="plan-title">Enterprise</div>
+        <div class="plan-price">Custom</div>
+        <div class="plan-description">
+          Comprehensive solution for large-scale projects and long-term partnerships.
+        </div>
+        <div class="plan-features">
+          <div class="plan-feature">Dedicated team</div>
+          <div class="plan-feature">24/7 support</div>
+          <div class="plan-feature">Strategic planning</div>
+          <div class="plan-feature">Unlimited projects</div>
+          <div class="plan-feature">Quarterly reviews</div>
+        </div>
+        <a href="mailto:hello@divblockstudio.com?subject=Enterprise Plan Inquiry" class="contact-btn">Contact us</a>
+      </div>
+    </div>
+
+    <div class="section-title">Our Approach</div>
+    <div class="included-container">
+      <div class="included-item">
+        <div class="included-icon"><i class="fas fa-lightbulb"></i></div>
+        <div class="included-text">Strategic Discovery</div>
+      </div>
+      <div class="included-item">
+        <div class="included-icon"><i class="fas fa-pencil-ruler"></i></div>
+        <div class="included-text">Thoughtful Design</div>
+      </div>
+      <div class="included-item">
+        <div class="included-icon"><i class="fas fa-code"></i></div>
+        <div class="included-text">Clean Code</div>
+      </div>
+      <div class="included-item">
+        <div class="included-icon"><i class="fas fa-tachometer-alt"></i></div>
+        <div class="included-text">Performance Focus</div>
+      </div>
+      <div class="included-item">
+        <div class="included-icon"><i class="fas fa-search"></i></div>
+        <div class="included-text">SEO Optimized</div>
+      </div>
+      <div class="included-item">
+        <div class="included-icon"><i class="fas fa-mobile-alt"></i></div>
+        <div class="included-text">Fully Responsive</div>
+      </div>
+      <div class="included-item">
+        <div class="included-icon"><i class="fas fa-shield-alt"></i></div>
+        <div class="included-text">Security First</div>
+      </div>
+      <div class="included-item">
+        <div class="included-icon"><i class="fas fa-headset"></i></div>
+        <div class="included-text">Ongoing Support</div>
+      </div>
+    </div>
+
+    <div class="section-title">Client Testimonials</div>
+    <div class="testimonial-container">
+      <div class="testimonial-slider">
+        <div class="testimonial-slides">
+          <div class="testimonial">
+            <div class="testimonial-text">
+              DivBlock Studio is an amazing partner! With their help, we were able to shift from a months-long timeline to launching initiatives and testing hypotheses in just days, saving invaluable resources.
+            </div>
+            <div class="testimonial-author">Pavel Rysych</div>
+            <div class="testimonial-role">Head of Product, Admirals</div>
+          </div>
+          <div class="testimonial">
+            <div class="testimonial-text">
+              Working with DivBlock's team was like adding a trusted member to our own. Their dedication, transparency, and expertise made them an invaluable part of our project.
+            </div>
+            <div class="testimonial-author">Humza Bhatti</div>
+            <div class="testimonial-role">Growth Lead, Tuli Health</div>
+          </div>
+          <div class="testimonial">
+            <div class="testimonial-text">
+              The quality of work and attention to detail from DivBlock Studio exceeded our expectations. They delivered not just a website, but a strategic digital asset that drives our business forward.
+            </div>
+            <div class="testimonial-author">Lisa Wong</div>
+            <div class="testimonial-role">Marketing Director, Default</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-nav">
+        <div class="testimonial-dot active" data-slide="0"></div>
+        <div class="testimonial-dot" data-slide="1"></div>
+        <div class="testimonial-dot" data-slide="2"></div>
+      </div>
+    </div>
+
+    <div class="cta-section" id="contact">
+      <div class="cta-title">
+        Ready to elevate your digital presence?<br>
+        Let's build something remarkable together.
+      </div>
+      <div class="cta-buttons">
+        <a href="mailto:hello@divblockstudio.com?subject=Project Inquiry" class="contact-btn">Get in touch</a>
+        <a href="https://calendly.com/divblock/consultation" class="contact-btn cta-btn-secondary">Book a call</a>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="footer-logo">
+        <img src="https://via.placeholder.com/120x40?text=DivBlock" alt="DivBlock Studio Logo">
+      </div>
+      <div class="social-links">
+        <a href="#"><i class="fab fa-behance"></i> Behance</a>
+        <a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a>
+        <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+      </div>
+      <div class="copyright">
+        © 2023 DivBlock Studio. All rights reserved.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Project Modals -->
+<div class="modal" id="default-modal">
+  <div class="modal-content">
+    <span class="close-modal">&times;</span>
+    <div class="modal-header">
+      <div class="modal-title">Default</div>
+      <div class="modal-subtitle">Corporate Website Redesign</div>
+    </div>
+    <div class="modal-slider">
+      <div class="modal-slides">
+        <div class="modal-slide">
+          <img src="https://source.unsplash.com/random/800x400/?webdesign,default" alt="Default Project 1">
+        </div>
+        <div class="modal-slide">
+          <img src="https://source.unsplash.com/random/800x400/?website,default" alt="Default Project 2">
+        </div>
+        <div class="modal-slide">
+          <img src="https://source.unsplash.com/random/800x400/?ui,default" alt="Default Project 3">
+        </div>
+      </div>
+    </div>
+    <div class="modal-description">
+      We partnered with Default.com to completely revamp their online presence. Their old website was outdated, slow, and didn't reflect their position as an industry leader. Our team delivered a sleek, responsive Webflow site with an interactive product tour, advanced spam protection, custom CMS setup, and thoughtful UX features.
+    </div>
+    <div class="modal-features">
+      <div class="modal-feature-title">What We Delivered</div>
+      <ul class="modal-feature-list">
+        <li class="modal-feature-item">Complete website redesign in Webflow</li>
+        <li class="modal-feature-item">Interactive product showcase with animations</li>
+        <li class="modal-feature-item">Custom CMS for easy content updates</li>
+        <li class="modal-feature-item">Advanced form security and spam protection</li>
+        <li class="modal-feature-item">Performance optimization (95+ Lighthouse score)</li>
+        <li class="modal-feature-item">SEO implementation and technical setup</li>
+      </ul>
+    </div>
+    <div class="modal-links">
+      <a href="https://default.com" class="modal-link modal-link-primary" target="_blank">Visit Website</a>
+      <a href="https://www.behance.net/gallery/12345678/Default-Website-Redesign" class="modal-link modal-link-secondary" target="_blank">View on Behance</a>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="actionable-modal">
+  <div class="modal-content">
+    <span class="close-modal">&times;</span>
+    <div class="modal-header">
+      <div class="modal-title">Actionable AI</div>
+      <div class="modal-subtitle">SaaS Platform Website</div>
+    </div>
+    <div class="modal-slider">
+      <div class="modal-slides">
+        <div class="modal-slide">
+          <img src="https://source.unsplash.com/random/800x400/?ai,dashboard" alt="Actionable AI Project 1">
+        </div>
+        <div class="modal-slide">
+          <img src="https://source.unsplash.com/random/800x400/?artificial,intelligence" alt="Actionable AI Project 2">
+        </div>
+        <div class="modal-slide">
+          <img src="https://source.unsplash.com/random/800x400/?machine,learning" alt="Actionable AI Project 3">
+        </div>
+      </div>
+    </div>
+    <div class="modal-description">
+      Actionable AI needed a website that could keep up with their rapidly evolving product. Their previous custom-coded site was difficult to update and didn't allow for quick experimentation. We built them a flexible Webflow site with a component-based design system that empowers their marketing team to create new pages and test hypotheses without developer help.
+    </div>
+    <div class="modal-features">
+      <div class="modal-feature-title">What We Delivered</div>
+      <ul class="modal-feature-list">
+        <li class="modal-feature-item">Marketing website in Webflow with CMS</li>
+        <li class="modal-feature-item">Design system for consistent branding</li>
+        <li class="modal-feature-item">Interactive demo of AI capabilities</li>
+        <li class="modal-feature-item">Integration with their application</li>
+        <li class="modal-feature-item">Training for their marketing team</li>
+        <li class="modal-feature-item">Ongoing support package</li>
+      </ul>
+    </div>
+    <div class="modal-links">
+      <a href="https://actionableai.com" class="modal-link modal-link-primary" target="_blank">Visit Website</a>
+      <a href="https://www.behance.net/gallery/12345678/Actionable-AI-Website" class="modal-link modal-link-secondary" target="_blank">View on Behance</a>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="admirals-modal">
+  <div class="modal-content">
+    <span class="close-modal">&times;</span>
+    <div class="modal-header">
+      <div class="modal-title">Admirals</div>
+      <div class="modal-subtitle">Marketing Websites & Landing Pages</div>
+    </div>
+    <div class="modal-slider">
+      <div class="modal-slides">
+        <div class="modal-slide">
+          <img src="https://source.unsplash.com/random/800x400/?finance,trading" alt="Admirals Project 1">
+        </div>
+        <div class="modal-slide">
+          <img src="https://source.unsplash.com/random/800x400/?stocks,market" alt="Admirals Project 2">
+        </div>
+        <div class="modal-slide">
+          <img src="https://source.unsplash.com/random/800x400/?investment,broker" alt="Admirals Project 3">
+        </div>
+      </div>
+    </div>
+    <div class="modal-description">
+      Admirals needed the ability to quickly create and test marketing pages without being limited by their development team's capacity. We implemented a Webflow-based solution that allows their marketing team to design, build, and launch new pages in days rather than weeks. This has dramatically increased their ability to test acquisition hypotheses and optimize conversions.
+    </div>
+    <div class="modal-features">
+      <div class="modal-feature-title">What We Delivered</div>
+      <ul class="modal-feature-list">
+        <li class="modal-feature-item">Webflow implementation for marketing team</li>
+        <li class="modal-feature-item">Custom component library for rapid page building</li>
+        <li class="modal-feature-item">Integration with their CRM and analytics</li>
+        <li class="modal-feature-item">Training and documentation</li>
+        <li class="modal-feature-item">Performance monitoring setup</li>
+        <li class="modal-feature-item">Ongoing optimization support</li>
+      </ul>
+    </div>
+    <div class="modal-links">
+      <a href="https://admirals.com" class="modal-link modal-link-primary" target="_blank">Visit Website</a>
+      <a href="https://www.behance.net/gallery/12345678/Admirals-Marketing-Pages" class="modal-link modal-link-secondary" target="_blank">View on Behance</a>
+    </div>
+  </div>
+</div>
+
+<!-- Service Modals -->
+<div class="modal" id="motion-design-modal">
+  <div class="service-modal-content">
+    <span class="close-modal">&times;</span>
+    <div class="service-modal-header">
+      <div class="service-modal-icon"><i class="fas fa-film"></i></div>
+      <div class="service-modal-title">Motion Design</div>
+    </div>
+    <div class="service-details">
+      <div class="service-detail-card">
+        <div class="service-detail-title">Starting Price</div>
+        <div class="service-detail-value">$1,200</div>
+      </div>
+      <div class="service-detail-card">
+        <div class="service-detail-title">Average Time</div>
+        <div class="service-detail-value">2-3 weeks</div>
+      </div>
+    </div>
+    <div class="service-process">
+      <div class="modal-feature-title">Our Process</div>
+      <div class="process-step">
+        <div class="process-number">1</div>
+        <div class="process-description">Discovery session to understand your brand and motion needs</div>
+      </div>
+      <div class="process-step">
+        <div class="process-number">2</div>
+        <div class="process-description">Concept development and storyboarding</div>
+      </div>
+      <div class="process-step">
+        <div class="process-number">3</div>
+        <div class="process-description">Animation prototyping and feedback</div>
+      </div>
+      <div class="process-step">
+        <div class="process-number">4</div>
+        <div class="process-description">Final animation delivery in multiple formats</div>
+      </div>
+    </div>
+    <div class="modal-links">
+      <a href="mailto:hello@divblockstudio.com?subject=Motion Design Inquiry" class="modal-link modal-link-primary">Get Started</a>
+      <a href="#" class="modal-link modal-link-secondary close-service-modal">Close</a>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="product-design-modal">
+  <div class="service-modal-content">
+    <span class="close-modal">&times;</span>
+    <div class="service-modal-header">
+      <div class="service-modal-icon"><i class="fas fa-cube"></i></div>
+      <div class="service-modal-title">Product Design</div>
+    </div>
+    <div class="service-details">
+      <div class="service-detail-card">
+        <div class="service-detail-title">Starting Price</div>
+        <div class="service-detail-value">$2,500</div>
+      </div>
+      <div class="service-detail-card">
+        <div class="service-detail-title">Average Time</div>
+        <div class="service-detail-value">4-6 weeks</div>
+      </div>
+    </div>
+    <div class="service-process">
+      <div class="modal-feature-title">Our Process</div>
+      <div class="process-step">
+        <div class="process-number">1</div>
+        <div class="process-description">User research and product discovery</div>
+      </div>
+      <div class="process-step">
+        <div class="process-number">2</div>
+        <div class="process-description">Wireframing and information architecture</div>
+      </div>
+      <div class="process-step">
+        <div class="process-number">3</div>
+        <div class="process-description">UI design and prototyping</div>
+      </div>
+      <div class="process-step">
+        <div class="process-number">4</div>
+        <div class="process-description">User testing and iteration</div>
+      </div>
+      <div class="process-step">
+        <div class="process-number">5</div>
+        <div class="process-description">Final design handoff with specifications</div>
+      </div>
+    </div>
+    <div class="modal-links">
+      <a href="mailto:hello@divblockstudio.com?subject=Product Design Inquiry" class="modal-link modal-link-primary">Get Started</a>
+      <a href="#" class="modal-link modal-link-secondary close-service-modal">Close</a>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="ui-ux-modal">
+  <div class="service-modal-content">
+    <span class="close-modal">&times;</span>
+    <div class="service-modal-header">
+      <div class="service-modal-icon"><i class="fas fa-mobile-alt"></i></div>
+      <div class="service-modal-title">UI/UX Design</div>
+    </div>
+    <div class="service-details">
+      <div class="service-detail-card">
+        <div class="service-detail-title">Starting Price</div>
+        <div class="service-detail-value">$1,800</div>
+      </div>
+      <div class="service-detail-card">
+        <div class="service-detail-title">Average Time</div>
+        <div class="service-detail-value">3-5 weeks</div>
+      </div>
+    </div>
+    <div class="service-process">
+      <div class="modal-feature-title">Our Process</div>
+      <div class="process-step">
+        <div class="process-number">1</div>
+        <div class="process-description">User journey mapping and flow analysis</div>
+      </div>
+      <div class="process-step">
+        <div class="process-number">2</div>
+        <div class="process-description">Wireframing and low-fidelity prototyping</div>
+      </div>
+      <div class="process-step">
+        <div class="process-number">3</div>
+        <div class="process-description">High-fidelity UI design</div>
+      </div>
+      <div class="process-step">
+        <div class="process-number">4</div>
+        <div class="process-description">Interactive prototyping and user testing</div>
+      </div>
+      <div class="process-step">
+        <div class="process-number">5</div>
+        <div class="process-description">Final design system delivery</div>
+      </div>
+    </div>
+    <div class="modal-links">
+      <a href="mailto:hello@plegmastudio.com?subject=UI/UX Design Inquiry" class="modal-link modal-link-primary">Get Started</a>
+      <a href="#" class="modal-link modal-link-secondary close-service-modal">Close</a>
+    </div>
+  </div>
+</div>
+
+<!-- Additional service modals would follow the same pattern -->
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      // Make left sidebar sticky
+      const leftSidebar = document.querySelector('.left-sidebar');
+
+      function handleScroll() {
+          if (window.innerWidth > 768) {
+              const scrollPosition = window.scrollY;
+              const sidebarHeight = leftSidebar.offsetHeight;
+              const contentHeight = document.querySelector('.main-content').offsetHeight;
+
+              if (scrollPosition + window.innerHeight > contentHeight + leftSidebar.offsetTop) {
+                  leftSidebar.style.position = 'absolute';
+                  leftSidebar.style.bottom = '0';
+                  leftSidebar.style.top = 'auto';
+              } else {
+                  leftSidebar.style.position = 'sticky';
+                  leftSidebar.style.bottom = 'auto';
+                  leftSidebar.style.top = '0';
+              }
+          }
+      }
+
+      window.addEventListener('scroll', handleScroll);
+      window.addEventListener('resize', function() {
+          if (window.innerWidth <= 768) {
+              leftSidebar.style.position = 'relative';
+          } else {
+              leftSidebar.style.position = 'sticky';
+          }
+      });
+
+      // Initialize project sliders
+      const projects = {
+          'default': {
+              slider: document.querySelector('#default-slider .project-slides'),
+              dots: document.querySelectorAll('[data-project="default"]'),
+              currentIndex: 0
+          },
+          'actionable': {
+              slider: document.querySelector('#actionable-slider .project-slides'),
+              dots: document.querySelectorAll('[data-project="actionable"]'),
+              currentIndex: 0
+          },
+          'admirals': {
+              slider: document.querySelector('#admirals-slider .project-slides'),
+              dots: document.querySelectorAll('[data-project="admirals"]'),
+              currentIndex: 0
+          }
+      };
+
+      // Set up click handlers for dots
+      document.querySelectorAll('.project-dot').forEach(dot => {
+          dot.addEventListener('click', function(e) {
+              e.stopPropagation();
+              const projectName = this.dataset.project;
+              const slideIndex = parseInt(this.dataset.slide);
+
+              // Update active dot
+              projects[projectName].dots.forEach(d => d.classList.remove('active'));
+              this.classList.add('active');
+
+              // Animate to selected slide
+              gsap.to(projects[projectName].slider, {
+                  x: `-${slideIndex * 100}%`,
+                  duration: 0.5,
+                  ease: "power2.out"
+              });
+
+              projects[projectName].currentIndex = slideIndex;
+          });
+      });
+
+      // Auto-rotate slides
+      function autoRotateSlides() {
+          for (const projectName in projects) {
+              const project = projects[projectName];
+              project.currentIndex = (project.currentIndex + 1) % project.dots.length;
+
+              // Update active dot
+              project.dots.forEach(d => d.classList.remove('active'));
+              project.dots[project.currentIndex].classList.add('active');
+
+              // Animate to next slide
+              gsap.to(project.slider, {
+                  x: `-${project.currentIndex * 100}%`,
+                  duration: 0.5,
+                  ease: "power2.out"
+              });
+          }
+
+          setTimeout(autoRotateSlides, 5000);
+      }
+
+      // Start auto-rotation after 5 seconds
+      setTimeout(autoRotateSlides, 5000);
+
+      // Add GSAP animations on scroll
+      gsap.utils.toArray('.project, .service-card, .plan, .testimonial, .included-item').forEach(element => {
+          gsap.from(element, {
+              scrollTrigger: {
+                  trigger: element,
+                  start: "top 80%",
+                  toggleActions: "play none none none"
+              },
+              opacity: 0,
+              y: 50,
+              duration: 0.8,
+              ease: "power2.out"
+          });
+      });
+
+      // Project modals
+      const modals = {
+          'default': document.getElementById('default-modal'),
+          'actionable': document.getElementById('actionable-modal'),
+          'admirals': document.getElementById('admirals-modal')
+      };
+
+      // Service modals
+      const serviceModals = {
+          'motion-design': document.getElementById('motion-design-modal'),
+          'product-design': document.getElementById('product-design-modal'),
+          'ui-ux': document.getElementById('ui-ux-modal'),
+          'web-dev': document.getElementById('web-dev-modal'),
+          'system-design': document.getElementById('system-design-modal'),
+          'branding': document.getElementById('branding-modal'),
+          'system-dev': document.getElementById('system-dev-modal'),
+          'saas-dev': document.getElementById('saas-dev-modal')
+      };
+
+      const closeButtons = document.querySelectorAll('.close-modal');
+      const closeServiceButtons = document.querySelectorAll('.close-service-modal');
+
+      // Open modal when project is clicked
+      document.querySelectorAll('.project').forEach(project => {
+          project.addEventListener('click', function() {
+              const projectName = this.dataset.project;
+              modals[projectName].style.display = 'block';
+              document.body.style.overflow = 'hidden';
+          });
+      });
+
+      // Open service modal when "Learn more" is clicked
+      document.querySelectorAll('.service-link').forEach(link => {
+          link.addEventListener('click', function(e) {
+              e.preventDefault();
+              const serviceName = this.closest('.service-card').dataset.service;
+              serviceModals[serviceName].style.display = 'block';
+              document.body.style.overflow = 'hidden';
+          });
+      });
+
+      // Close modal when X is clicked
+      closeButtons.forEach(button => {
+          button.addEventListener('click', function() {
+              this.closest('.modal').style.display = 'none';
+              document.body.style.overflow = 'auto';
+          });
+      });
+
+      // Close service modal when Close button is clicked
+      closeServiceButtons.forEach(button => {
+          button.addEventListener('click', function(e) {
+              e.preventDefault();
+              this.closest('.modal').style.display = 'none';
+              document.body.style.overflow = 'auto';
+          });
+      });
+
+      // Close modal when clicking outside content
+      window.addEventListener('click', function(e) {
+          if (e.target.classList.contains('modal')) {
+              e.target.style.display = 'none';
+              document.body.style.overflow = 'auto';
+          }
+      });
+
+      // Testimonial slider
+      const testimonialSlides = document.querySelector('.testimonial-slides');
+      const testimonialDots = document.querySelectorAll('.testimonial-dot');
+      let currentTestimonial = 0;
+
+      function showTestimonial(index) {
+          testimonialSlides.style.transform = `translateX(-${index * 100}%)`;
+          testimonialDots.forEach(dot => dot.classList.remove('active'));
+          testimonialDots[index].classList.add('active');
+          currentTestimonial = index;
+      }
+
+      testimonialDots.forEach((dot, index) => {
+          dot.addEventListener('click', () => showTestimonial(index));
+      });
+
+      // Auto-rotate testimonials
+      function rotateTestimonials() {
+          currentTestimonial = (currentTestimonial + 1) % testimonialDots.length;
+          showTestimonial(currentTestimonial);
+          setTimeout(rotateTestimonials, 6000);
+      }
+
+      setTimeout(rotateTestimonials, 6000);
+  });
+</script>
+</body>
+</html>
